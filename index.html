@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Web Application</title>
+    <h1 style="color:white ;">Empolyee Details</h1>
+
+
+    <!-- Add some CSS to change client UI -->
+    <style>
+        body {
+            background-image: url('https://www.cloud4c.com/vn/sites/vn/files/2023-11/aws-outposts-1_0.webp');
+        }
+           h1 {text-align: center;}
+
+        label
+        {
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 20px;
+            margin-right: 40px;
+        }
+        button {
+            color: black;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 20px;
+            margin-right: 40px;
+        }                       
+
+        input {
+            color: black;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 20px;
+            margin-right: 40px;
+        }
+    </style>
+    <script>
+        // define the callAPI function that takes a first name and last name as parameters
+        var SUBMIT = (firstName, lastName, Designation, emailaddress, phonenumber) => {
+            // instantiate a headers object
+            var myHeaders = new Headers();
+            // add content type header to object
+            myHeaders.append("Content-Type", "application/json");
+            // using built in JSON utility package turn object to string and store in a variable
+            var raw = JSON.stringify({
+                "firstName": firstName,
+                "lastName": lastName,
+                "Designation": Designation,
+                "emailaddress": emailaddress,
+                "phonenumber": phonenumber
+
+            });
+            // create a JSON object with parameters for API call and store in a variable
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+                                 
+ };
+            // make API call with parameters and use promises to get response
+            fetch("https://4lt060p4lh.execute-api.us-east-1.amazonaws.com/dev", requestOptions)
+                .then(response => response.text())
+                .then(result => alert(JSON.parse(result).body))
+                .catch(error => console.log('error', error));
+        }
+    </script>
+</head>
+
+<body>
+    <form align="center">
+        <label>First Name :</label><br>
+        <input type="text" id="fisrtName"><br>
+        <label>Last Name :</label><br>
+        <input type="text" id="lastName"><br>
+        <label>Designation :</label><br>
+        <input type="text" id="Designation"><br>
+        <label>Email Address :</label><br>
+        <input type="text" id="emailaddress"><br>
+        <label>PhoneNumber :</label><br>
+        <input type="text" id="phonenumber"><br>
+        <!-- set button onClick method to call function we defined passing input values as parameters -->
+        <button type="button" onclick="SUBMIT(document.getElementById('fisrtName').value,document.getElementById('lastName').value,document.getElementById('Designation').value,document.getElementById('emailaddress').value,document.getElementById('phonenumber').value)">SUBMIT</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,62 @@
+# import the JSON utility package since we will be working with json object
+import json
+# define the handler function that the Lambda service will use an entry point
+def lambda_handler(event, context):
+# extract values from the event object we got from lambda service
+    name = event['firstName'] +' '+ event['lastName'] +' '+ event['Designation'] +' '+ event['emailaddress'] +' '+ event['phonenumber']
+#return a properly formatted JSON object
+    return{
+        'statusCode': 200,
+        'body': json.dumps('Hello from Web Application, ' + name)
+    }
+
+***************************************************************************************************
+{
+"firstName": "ritesh",
+"lastName": "kolambe",
+"Designation": "cloud engineer",
+"emailaddress": "ritesh@gmail.com",
+"phonenumber": "9766770161"
+}
+
+**********************************************************************************************************
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "VisualEditor0",
+			"Effect": "Allow",
+			"Action": [
+			    "dynamodb:PutItem",
+			    "dynamodb:DeleteItem",
+			    "dynamodb:GetItem",
+			    "dynamodb:Scan",
+			    "dynamodb:Query",
+			    "dynamodb:UpdateItem"
+			    
+			    ],
+			"Resource": "Change ARN Every Time collect from DynamoDB "
+		}
+	]
+}
+
+
+********************************************************************************************************************
+import json
+import boto3
+from time import gmtime, strftime
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('projecttable')
+now = strftime("%a, %d %b %Y %H:%M:%s +0000", gmtime())
+
+def lambda_handler(event, context):
+    name = event['firstName'] +' '+ event['lastName'] +' '+ event['Designation'] +' '+ event['emailaddress'] +' '+ event['phonenumber']
+    response = table.put_item(
+        Item={
+            'ID': name,
+            'LatestGreetingTime':now
+        })
+    return{
+        'statusCode': 200,
+        'body' : json.dumps('Inserted Sucessfully, ' + name)
+    }
